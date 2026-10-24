@@ -1,0 +1,30 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "dev",
+      "displayName": "Desktop Qt 6 (set Qt kit or CMAKE_PREFIX_PATH)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/dev",
+      "cacheVariables": {"CMAKE_BUILD_TYPE": "RelWithDebInfo", "BUILD_TESTING": "ON"}
+    },
+    {
+      "name": "macos-local",
+      "displayName": "Local macOS Qt 6.11.2",
+      "inherits": "dev",
+      "binaryDir": "${sourceDir}/build/macos",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "$env{HOME}/Qt/6.11.2/macos",
+        "CMAKE_MAKE_PROGRAM": "$env{HOME}/Qt/Tools/Ninja/ninja"
+      }
+    }
+  ],
+  "buildPresets": [
+    {"name": "dev", "configurePreset": "dev"},
+    {"name": "macos-local", "configurePreset": "macos-local"}
+  ],
+  "testPresets": [
+    {"name": "dev", "configurePreset": "dev", "output": {"outputOnFailure": true}},
+    {"name": "macos-local", "configurePreset": "macos-local", "output": {"outputOnFailure": true}}
+  ]
+}

@@ -1,0 +1,192 @@
+{
+    "cycleMs": 1000,
+    "database": {
+        "database": "data/simulation/inspection.sqlite",
+        "driver": "QSQLITE",
+        "host": "localhost",
+        "odbcDriver": "ODBC Driver 18 for SQL Server",
+        "passwordEnvironment": "IVS_SQLSERVER_PASSWORD",
+        "port": 1433,
+        "trustServerCertificate": false,
+        "user": ""
+    },
+    "devices": [
+        {
+            "backend": "simulated",
+            "category": "camera",
+            "host": "127.0.0.1",
+            "id": "camera-1",
+            "model": "虚拟相机 · 合成工件图像",
+            "parameters": {
+                "motionDeviceId": "motion-1",
+                "lightDeviceId": "light-1",
+                "lightChannel": 0
+            },
+            "port": 502,
+            "unitId": 1
+        },
+        {
+            "backend": "simulated",
+            "category": "motion",
+            "host": "127.0.0.1",
+            "id": "motion-1",
+            "model": "虚拟四轴平台 · 位置与速度",
+            "parameters": {},
+            "port": 502,
+            "unitId": 1
+        },
+        {
+            "backend": "simulated",
+            "category": "light",
+            "host": "127.0.0.1",
+            "id": "light-1",
+            "model": "虚拟四通道光源 · 图像联动",
+            "parameters": {},
+            "port": 502,
+            "unitId": 1
+        },
+        {
+            "backend": "simulated",
+            "category": "plc",
+            "host": "127.0.0.1",
+            "id": "plc-1",
+            "model": "虚拟 PLC · 寄存器与触发",
+            "parameters": {},
+            "port": 502,
+            "unitId": 1
+        },
+        {
+            "backend": "simulated",
+            "category": "io",
+            "host": "127.0.0.1",
+            "id": "io-1",
+            "model": "虚拟 I/O · 数字信号与结果",
+            "parameters": {},
+            "port": 502,
+            "unitId": 1
+        }
+    ],
+    "flow": [
+        {
+            "enabled": true,
+            "id": "trigger-1",
+            "parameters": {
+                "deviceId": "plc-1",
+                "timeoutMs": 60000
+            },
+            "title": "虚拟工件到位",
+            "type": "trigger"
+        },
+        {
+            "enabled": true,
+            "id": "move-1",
+            "parameters": {
+                "position": 0,
+                "axis": 0,
+                "speed": 25,
+                "timeoutMs": 10000,
+                "deviceId": "motion-1"
+            },
+            "title": "运动定位",
+            "type": "move"
+        },
+        {
+            "enabled": true,
+            "id": "light-1",
+            "parameters": {
+                "brightness": 80,
+                "channel": 0,
+                "enabled": true,
+                "deviceId": "light-1"
+            },
+            "title": "光源控制",
+            "type": "light"
+        },
+        {
+            "enabled": true,
+            "id": "capture-1",
+            "parameters": {
+                "deviceId": "camera-1"
+            },
+            "title": "采集仿真工件图像",
+            "type": "capture"
+        },
+        {
+            "enabled": true,
+            "id": "inspect-1",
+            "parameters": {},
+            "title": "图像测量",
+            "type": "inspect"
+        },
+        {
+            "enabled": true,
+            "id": "judge-1",
+            "parameters": {},
+            "title": "结果判定",
+            "type": "judge"
+        },
+        {
+            "enabled": true,
+            "id": "store-1",
+            "parameters": {},
+            "title": "保存记录",
+            "type": "store"
+        },
+        {
+            "enabled": true,
+            "id": "output-1",
+            "parameters": {
+                "deviceId": "io-1",
+                "function": "holding",
+                "address": 0
+            },
+            "title": "虚拟输出检测结果",
+            "type": "output"
+        }
+    ],
+    "imagePolicy": "all",
+    "imageQuotaMB": 256,
+    "imageRetentionDays": 30,
+    "maxDiameterMm": 21,
+    "minDiameterMm": 19,
+    "name": "无硬件仿真实验台",
+    "panels": [
+        {
+            "field": "diameterMm",
+            "id": "image-1",
+            "title": "实时检测图像",
+            "type": "image"
+        },
+        {
+            "field": "diameterMm",
+            "id": "table-1",
+            "title": "最近检测记录",
+            "type": "table"
+        },
+        {
+            "field": "diameterMm",
+            "id": "trend-1",
+            "title": "尺寸趋势",
+            "type": "trend"
+        },
+        {
+            "field": "offsetYmm",
+            "id": "scatter-1",
+            "title": "位置分布",
+            "type": "scatter"
+        },
+        {
+            "field": "durationMs",
+            "id": "log-1",
+            "title": "运行事件",
+            "type": "log"
+        }
+    ],
+    "pixelsPerMm": 20,
+    "recipe": "仿真尺寸检测 1.0",
+    "resolution": {
+        "width": 1280,
+        "height": 1024
+    },
+    "schemaVersion": 1
+}
